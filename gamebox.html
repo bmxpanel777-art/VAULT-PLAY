@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0,
+      maximum-scale=1.0,user-scalable=no">
+
+<title>GAMEVAULT</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+    -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+    --bg:#f4f6fb;
+    --card:#ffffff;
+    --text:#172033;
+    --muted:#697386;
+    --primary:#6757ff;
+    --primary2:#5142e8;
+    --border:#e4e7ef;
+    --danger:#e5484d;
+    --shadow:0 8px 30px rgba(24,32,55,.08);
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+button,
+input,
+textarea,
+select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+    border:0;
+}
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(255,255,255,.96);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid var(--border);
+}
+
+.header-inner{
+    max-width:1200px;
+    margin:auto;
+    min-height:72px;
+    padding:12px 20px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:22px;
+    font-weight:900;
+    white-space:nowrap;
+}
+
+.logo-icon{
+    width:42px;
+    height:42px;
+    border-radius:13px;
+    background:linear-gradient(135deg,#7667ff,#4e3ee8);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    box-shadow:0 6px 18px rgba(103,87,255,.3);
+}
+
+.search{
+    flex:1;
+    max-width:520px;
+    margin:auto;
+    position:relative;
+}
+
+.search input{
+    width:100%;
+    height:44px;
+    border:1px solid var(--border);
+    background:#f6f7fa;
+    border-radius:14px;
+    padding:0 16px 0 44px;
+    outline:none;
+    color:var(--text);
+}
+
+.search input:focus{
+    border-color:var(--primary);
+    background:#fff;
+}
+
+.search-icon{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#7b8497;
+}
+
+.upload-top{
+    background:var(--primary);
+    color:white;
+    padding:12px 18px;
+    border-radius:13px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.upload-top:hover{
+    background:var(--primary2);
+}
+
+.profile-btn{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:#eef0ff;
+    color:var(--primary);
+    font-size:19px;
+}
+
+main{
+    max-width:1200px;
+    margin:auto;
+    padding:28px 20px 80px;
+}
+
+.hero{
+    background:
+        radial-gradient(circle at 80% 20%,rgba(255,255,255,.22),transparent 30%),
+        linear-gradient(135deg,#6858ff,#4031c9);
+    border-radius:24px;
+    color:white;
+    padding:42px;
+    min-height:220px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:25px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(82,65,230,.2);
+}
+
+.hero h1{
+    font-size:42px;
+    line-height:1.05;
+    margin-bottom:12px;
+}
+
+.hero p{
+    opacity:.9;
+    font-size:16px;
+    max-width:560px;
+    line-height:1.6;
+}
+
+.hero-btn{
+    margin-top:22px;
+    padding:13px 20px;
+    border-radius:13px;
+    background:white;
+    color:#4f40df;
+    font-weight:900;
+}
+
+.hero-art{
+    width:180px;
+    height:180px;
+    border-radius:45px;
+    background:rgba(255,255,255,.13);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:90px;
+    transform:rotate(8deg);
+    flex-shrink:0;
+}
+
+.section{
+    margin-top:32px;
+}
+
+.section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+}
+
+.section-head h2{
+    font-size:24px;
+}
+
+.categories{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:5px;
+}
+
+.categories::-webkit-scrollbar{
+    display:none;
+}
+
+.category{
+    flex-shrink:0;
+    padding:10px 17px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:white;
+    color:#596276;
+    font-weight:700;
+}
+
+.category.active{
+    background:var(--primary);
+    color:white;
+    border-color:var(--primary);
+}
+
+.game-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.game-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    transition:.2s;
+}
+
+.game-card:hover{
+    transform:translateY(-3px);
+}
+
+.game-cover{
+    aspect-ratio:1/1;
+    background:#eef0f7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.game-cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.game-placeholder{
+    font-size:60px;
+}
+
+.game-info{
+    padding:14px;
+}
+
+.game-name{
+    font-size:17px;
+    font-weight:900;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.game-developer{
+    color:var(--muted);
+    margin-top:5px;
+    font-size:13px;
+}
+
+.game-category{
+    display:inline-block;
+    margin-top:10px;
+    background:#f0efff;
+    color:#5b4ce8;
+    padding:5px 9px;
+    border-radius:8px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.game-actions{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+}
+
+.game-actions button{
+    flex:1;
+    padding:10px 8px;
+    border-radius:10px;
+    font-weight:800;
+}
+
+.details-btn{
+    background:#f0f1f6;
+    color:#414a5c;
+}
+
+.play-btn{
+    background:var(--primary);
+    color:white;
+}
+
+.empty{
+    background:white;
+    border:2px dashed #d9dce6;
+    border-radius:22px;
+    padding:60px 20px;
+    text-align:center;
+}
+
+.empty-icon{
+    width:80px;
+    height:80px;
+    border-radius:24px;
+    background:#f0efff;
+    margin:0 auto 18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:40px;
+}
+
+.empty h3{
+    font-size:22px;
+    margin-bottom:8px;
+}
+
+.empty p{
+    color:var(--muted);
+    line-height:1.6;
+    margin-bottom:20px;
+}
+
+.empty button{
+    background:var(--primary);
+    color:white;
+    padding:13px 20px;
+    border-radius:12px;
+    font-weight:900;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(12,16,28,.62);
+    z-index:500;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:650px;
+    max-height:92vh;
+    overflow-y:auto;
+    border-radius:22px;
+    box-shadow:0 30px 80px rgba(0,0,0,.25);
+}
+
+.modal-header{
+    padding:20px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    background:white;
+    z-index:2;
+}
+
+.modal-header h2{
+    font-size:21px;
+}
+
+.close{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#f0f1f5;
+    font-size:20px;
+}
+
+.modal-body{
+    padding:20px;
+}
+
+.form-group{
+    margin-bottom:16px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:7px;
+    font-size:13px;
+    font-weight:800;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px;
+    outline:none;
+    background:#fafbfc;
+    color:var(--text);
+}
+
+.form-group textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:var(--primary);
+    background:white;
+}
+
+.file-box{
+    border:2px dashed #d9dce7;
+    border-radius:14px;
+    padding:18px;
+    background:#fafbfe;
+}
+
+.file-box input{
+    border:0;
+    background:transparent;
+    padding:0;
+}
+
+.help{
+    margin-top:6px;
+    color:#7a8395;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.preview{
+    width:100px;
+    height:100px;
+    border-radius:18px;
+    background:#eeeef5;
+    overflow:hidden;
+    display:none;
+    margin-top:10px;
+}
+
+.preview img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.submit-btn{
+    width:100%;
+    background:var(--primary);
+    color:white;
+    padding:14px;
+    border-radius:12px;
+    font-weight:900;
+    font-size:16px;
+    margin-top:5px;
+}
+
+.detail-cover{
+    width:150px;
+    height:150px;
+    margin:0 auto 18px;
+    border-radius:25px;
+    overflow:hidden;
+    background:#eeeef5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:70px;
+}
+
+.detail-cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.detail-title{
+    text-align:center;
+    font-size:25px;
+    font-weight:900;
+}
+
+.detail-developer{
+    text-align:center;
+    color:var(--muted);
+    margin-top:6px;
+}
+
+.detail-description{
+    margin-top:20px;
+    line-height:1.7;
+    color:#4c566a;
+    white-space:pre-wrap;
+}
+
+.detail-meta{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:20px;
+}
+
+.meta{
+    background:#f5f6fa;
+    padding:12px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.meta strong{
+    display:block;
+    font-size:13px;
+}
+
+.meta span{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:4px;
+    display:block;
+}
+
+.detail-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:22px;
+}
+
+.detail-buttons button{
+    flex:1;
+    padding:13px;
+    border-radius:12px;
+    font-weight:900;
+}
+
+.delete-btn{
+    background:#fff0f0;
+    color:var(--danger);
+}
+
+.play-large{
+    background:var(--primary);
+    color:white;
+}
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%) translateY(100px);
+    background:#171b27;
+    color:white;
+    padding:13px 18px;
+    border-radius:12px;
+    z-index:1000;
+    opacity:0;
+    transition:.3s;
+    font-weight:700;
+    max-width:90%;
+    text-align:center;
+}
+
+.toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+}
+
+.footer{
+    text-align:center;
+    color:#8790a2;
+    padding:25px 15px;
+    font-size:13px;
+}
+
+@media(max-width:950px){
+    .game-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .hero-art{
+        width:140px;
+        height:140px;
+        font-size:70px;
+    }
+}
+
+@media(max-width:700px){
+    .header-inner{
+        flex-wrap:wrap;
+        padding:10px 14px;
+    }
+
+    .logo{
+        font-size:18px;
+    }
+
+    .logo-icon{
+        width:38px;
+        height:38px;
+    }
+
+    .search{
+        order:3;
+        flex-basis:100%;
+        max-width:none;
+    }
+
+    .upload-top{
+        margin-left:auto;
+        padding:10px 13px;
+        font-size:13px;
+    }
+
+    .profile-btn{
+        display:none;
+    }
+
+    main{
+        padding:18px 14px 60px;
+    }
+
+    .hero{
+        padding:28px 22px;
+        min-height:auto;
+    }
+
+    .hero h1{
+        font-size:31px;
+    }
+
+    .hero-art{
+        display:none;
+    }
+
+    .game-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+    }
+
+    .game-info{
+        padding:11px;
+    }
+
+    .game-name{
+        font-size:15px;
+    }
+
+    .game-actions button{
+        font-size:12px;
+        padding:9px 5px;
+    }
+
+    .empty{
+        padding:45px 15px;
+    }
+
+    .detail-meta{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:390px){
+    .game-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .game-category{
+        font-size:10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-inner">
+
+        <div class="logo">
+            <div class="logo-icon">🎮</div>
+            GAMEVAULT
+        </div>
+
+        <div class="search">
+            <span class="search-icon">🔍</span>
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Search games..."
+                oninput="renderGames()">
+        </div>
+
+        <button class="upload-top" onclick="openUpload()">
+            ＋ Upload
+        </button>
+
+        <button class="profile-btn" onclick="showProfile()">
+            👤
+        </button>
+
+    </div>
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <div>
+            <h1>Create. Upload. Play.</h1>
+
+            <p>
+                GAMEVAULT is your own game store.
+                Upload the games you create and build your
+                own collection. No demo games are included.
+            </p>
+
+            <button class="hero-btn" onclick="openUpload()">
+                ＋ UPLOAD YOUR GAME
+            </button>
+        </div>
+
+        <div class="hero-art">
+            🎮
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <div class="section-head">
+            <h2>Categories</h2>
+        </div>
+
+        <div class="categories">
+
+            <button class="category active"
+                    onclick="selectCategory('All',this)">
+                All
+            </button>
+
+            <button class="category"
+                    onclick="selectCategory('Action',this)">
+                ⚔️ Action
+            </button>
+
+            <button class="category"
+                    onclick="selectCategory('Adventure',this)">
+                🗺️ Adventure
+            </button>
+
+            <button class="category"
+                    onclick="selectCategory('Racing',this)">
+                🏎️ Racing
+            </button>
+
+            <button class="category"
+                    onclick="selectCategory('Puzzle',this)">
+                🧩 Puzzle
+            </button>
+
+            <button class="category"
+                    onclick="selectCategory('Sports',this)">
+                ⚽ Sports
+            </button>
+
+            <button class="category"
+                    onclick="selectCategory('Strategy',this)">
+                ♟️ Strategy
+            </button>
+
+            <button class="category"
+                    onclick="selectCategory('Simulation',this)">
+                🌍 Simulation
+            </button>
+
+            <button class="category"
+                    onclick="selectCategory('3D',this)">
+                🧊 3D
+            </button>
+
+            <button class="category"
+                    onclick="selectCategory('Other',this)">
+                🎮 Other
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <div class="section-head">
+            <h2>Games</h2>
+            <span id="gameCount"
+                  style="color:#7a8395;font-size:13px;">
+            </span>
+        </div>
+
+        <div id="gameGrid" class="game-grid"></div>
+
+        <div id="emptyState" class="empty">
+
+            <div class="empty-icon">
+                🎮
+            </div>
+
+            <h3>No games published yet</h3>
+
+            <p>
+                GAMEVAULT is empty.<br>
+                Create your first game and upload it here.
+            </p>
+
+            <button onclick="openUpload()">
+                ＋ UPLOAD YOUR GAME
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+    GAMEVAULT • Create. Upload. Play.
+</footer>
+
+
+<!-- UPLOAD MODAL -->
+
+<div id="uploadModal" class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2>Upload Your Game</h2>
+
+            <button class="close"
+                    onclick="closeUpload()">
+                ×
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <form id="uploadForm">
+
+                <div class="form-group">
+                    <label>GAME NAME *</label>
+
+                    <input
+                        id="gameName"
+                        required
+                        maxlength="80"
+                        placeholder="Example: My Adventure Game">
+                </div>
+
+
+                <div class="form-group">
+                    <label>DEVELOPER *</label>
+
+                    <input
+                        id="developer"
+                        required
+                        maxlength="60"
+                        placeholder="Your name or studio">
+                </div>
+
+
+                <div class="form-group">
+                    <label>CATEGORY *</label>
+
+                    <select id="category" required>
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option>Action</option>
+                        <option>Adventure</option>
+                        <option>Racing</option>
+                        <option>Puzzle</option>
+                        <option>Sports</option>
+                        <option>Strategy</option>
+                        <option>Simulation</option>
+                        <option>3D</option>
+                        <option>Other</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label>VERSION</label>
+
+                    <input
+                        id="version"
+                        value="1.0.0"
+                        maxlength="20"
+                        placeholder="1.0.0">
+                </div>
+
+
+                <div class="form-group">
+                    <label>DESCRIPTION *</label>
+
+                    <textarea
+                        id="description"
+                        required
+                        maxlength="3000"
+                        placeholder="Tell players about your game..."></textarea>
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>GAME ICON *</label>
+
+                    <div class="file-box">
+
+                        <input
+                            id="iconFile"
+                            type="file"
+                            accept="image/png,image/jpeg,image/webp"
+                            required
+                            onchange="previewIcon(event)">
+
+                        <div class="help">
+                            PNG, JPG or WEBP. Recommended 512×512.
+                        </div>
+
+                        <div id="iconPreview"
+                             class="preview">
+                            <img id="iconPreviewImg">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>GAME FILE *</label>
+
+                    <div class="file-box">
+
+                        <input
+                            id="gameFile"
+                            type="file"
+                            required
+                            accept=".zip,.html,.htm,.apk,.aab,.exe,.pck,.godot">
+
+                        <div class="help">
+                            Supported prototype file types:
+                            ZIP, HTML, APK, AAB, EXE, PCK and Godot files.
+                            Browser security/storage limits still apply.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>SCREENSHOTS</label>
+
+                    <div class="file-box">
+
+                        <input
+                            id="screenshots"
+                            type="file"
+                            accept="image/png,image/jpeg,image/webp"
+                            multiple>
+
+                        <div class="help">
+                            Add screenshots of your game.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn">
+                    🚀 PUBLISH GAME
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- DETAILS MODAL -->
+
+<div id="detailsModal" class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Game Details</h2>
+
+            <button class="close"
+                    onclick="closeDetails()">
+                ×
+            </button>
+
+        </div>
+
+        <div class="modal-body"
+             id="detailsContent">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- PROFILE MODAL -->
+
+<div id="profileModal" class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>My GAMEVAULT</h2>
+
+            <button class="close"
+                    onclick="closeProfile()">
+                ×
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+
+            <div style="
+                text-align:center;
+                padding:15px 0 25px;
+            ">
+
+                <div style="
+                    width:80px;
+                    height:80px;
+                    margin:auto;
+                    border-radius:50%;
+                    background:#f0efff;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:38px;
+                ">
+                    👤
+                </div>
+
+                <h3 style="margin-top:14px;">
+                    Game Creator
+                </h3>
+
+                <p style="
+                    color:#7a8395;
+                    margin-top:5px;
+                ">
+                    Your uploaded games
+                </p>
+
+            </div>
+
+
+            <div style="
+                display:grid;
+                grid-template-columns:1fr 1fr;
+                gap:12px;
+            ">
+
+                <div class="meta">
+                    <strong id="profileGames">
+                        0
+                    </strong>
+                    <span>Published Games</span>
+                </div>
+
+                <div class="meta">
+                    <strong id="profileStorage">
+                        0 MB
+                    </strong>
+                    <span>Stored Data</span>
+                </div>
+
+            </div>
+
+
+            <button
+                onclick="clearAllGames()"
+                style="
+                    width:100%;
+                    margin-top:20px;
+                    padding:13px;
+                    border-radius:12px;
+                    background:#fff0f0;
+                    color:#d73e43;
+                    font-weight:900;
+                ">
+                🗑️ DELETE ALL MY GAMES
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+/*
+========================================================
+ GAMEVAULT EMPTY STORE
+========================================================
+
+ IMPORTANT:
+ There are NO default/demo games.
+
+ Games are loaded ONLY from localStorage.
+
+ For a real multi-user public store, replace the
+ localStorage system with a backend/database/cloud
+ storage service.
+
+========================================================
+*/
+
+
+const STORAGE_KEY = "GAMEVAULT_GAMES_V1";
+
+let games = [];
+
+let selectedCategory = "All";
+
+let currentGameId = null;
+
+
+/* =========================================
+   LOAD SAVED GAMES
+========================================= */
+
+function loadGames(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(STORAGE_KEY);
+
+        if(saved){
+
+            games = JSON.parse(saved);
+
+            if(!Array.isArray(games)){
+                games = [];
+            }
+
+        }else{
+
+            /*
+             * IMPORTANT:
+             * EMPTY STORE.
+             * NO DEMO GAMES.
+             */
+
+            games = [];
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        games = [];
+
+    }
+
+}
+
+
+/* =========================================
+   SAVE GAMES
+========================================= */
+
+function saveGames(){
+
+    try{
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(games)
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            "Storage is full. Large game files cannot be stored here."
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   UPLOAD MODAL
+========================================= */
+
+function openUpload(){
+
+    document
+        .getElementById("uploadModal")
+        .classList.add("show");
+
+}
+
+
+function closeUpload(){
+
+    document
+        .getElementById("uploadModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================
+   PREVIEW ICON
+========================================= */
+
+function previewIcon(event){
+
+    const file =
+        event.target.files[0];
+
+    const preview =
+        document.getElementById("iconPreview");
+
+    const img =
+        document.getElementById("iconPreviewImg");
+
+    if(!file){
+
+        preview.style.display="none";
+
+        return;
+
+    }
+
+    const reader =
+        new FileReader();
+
+    reader.onload=function(e){
+
+        img.src=e.target.result;
+
+        preview.style.display="block";
+
+    };
+
+    reader.readAsDataURL(file);
+
+}
+
+
+/* =========================================
+   FILE TO DATA URL
+========================================= */
+
+function fileToDataURL(file){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            const reader =
+                new FileReader();
+
+            reader.onload=()=>{
+                resolve(reader.result);
+            };
+
+            reader.onerror=reject;
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   UPLOAD GAME
+========================================= */
+
+document
+.getElementById("uploadForm")
+.addEventListener("submit",async function(event){
+
+    event.preventDefault();
+
+
+    const name =
+        document
+        .getElementById("gameName")
+        .value.trim();
+
+
+    const developer =
+        document
+        .getElementById("developer")
+        .value.trim();
+
+
+    const category =
+        document
+        .getElementById("category")
+        .value;
+
+
+    const version =
+        document
+        .getElementById("version")
+        .value.trim() || "1.0.0";
+
+
+    const description =
+        document
+        .getElementById("description")
+        .value.trim();
+
+
+    const iconInput =
+        document.getElementById("iconFile");
+
+
+    const gameInput =
+        document.getElementById("gameFile");
+
+
+    if(!name ||
+       !developer ||
+       !category ||
+       !description ||
+       !iconInput.files[0] ||
+       !gameInput.files[0]){
+
+        showToast(
+            "Please complete all required fields."
+        );
+
+        return;
+
+    }
+
+
+    const iconFile =
+        iconInput.files[0];
+
+
+    const gameFile =
+        gameInput.files[0];
+
+
+    /*
+     * Browser localStorage is not suitable
+     * for large APK/ZIP/EXE files.
+     *
+     * This prototype checks size before storing.
+     */
+
+    const MAX_FILE_SIZE =
+        15 * 1024 * 1024;
+
+
+    if(gameFile.size > MAX_FILE_SIZE){
+
+        showToast(
+            "Game file is too large for this browser prototype. Maximum 15 MB."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        showToast("Publishing game...");
+
+
+        const iconData =
+            await fileToDataURL(iconFile);
+
+
+        const gameData =
+            await fileToDataURL(gameFile);
+
+
+        const screenshotsInput =
+            document.getElementById("screenshots");
+
+
+        const screenshots=[];
+
+
+        for(
+            const screenshot
+            of screenshotsInput.files
+        ){
+
+            if(
+                screenshot.size <=
+                5 * 1024 * 1024
+            ){
+
+                screenshots.push(
+                    await fileToDataURL(
+                        screenshot
+                    )
+                );
+
+            }
+
+        }
+
+
+        const game={
+
+            id:
+                Date.now().toString()
+                + "_"
+                + Math.random()
+                    .toString(36)
+                    .slice(2),
+
+            name:name,
+
+            developer:developer,
+
+            category:category,
+
+            version:version,
+
+            description:description,
+
+            icon:iconData,
+
+            fileName:gameFile.name,
+
+            fileType:
+                gameFile.type ||
+                getExtension(gameFile.name),
+
+            fileSize:gameFile.size,
+
+            gameFile:gameData,
+
+            screenshots:screenshots,
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        games.unshift(game);
+
+
+        try{
+
+            saveGames();
+
+        }catch(error){
+
+            games.shift();
+
+            throw error;
+
+        }
+
+
+        renderGames();
+
+        closeUpload();
+
+
+        document
+            .getElementById("uploadForm")
+            .reset();
+
+
+        document
+            .getElementById("iconPreview")
+            .style.display="none";
+
+
+        showToast(
+            "🎉 Your game has been published!"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            "Could not publish the game. Browser storage may be full."
+        );
+
+    }
+
+});
+
+
+/* =========================================
+   FILE EXTENSION
+========================================= */
+
+function getExtension(filename){
+
+    const parts =
+        filename.split(".");
+
+    if(parts.length<2){
+        return "file";
+    }
+
+    return "." +
+        parts
+        [parts.length-1]
+        .toLowerCase();
+
+}
+
+
+/* =========================================
+   CATEGORY
+========================================= */
+
+function selectCategory(category,button){
+
+    selectedCategory=category;
+
+
+    document
+        .querySelectorAll(".category")
+        .forEach(
+            item =>
+            item.classList.remove("active")
+        );
+
+
+    button.classList.add("active");
+
+
+    renderGames();
+
+}
+
+
+/* =========================================
+   RENDER GAMES
+========================================= */
+
+function renderGames(){
+
+    const grid =
+        document.getElementById("gameGrid");
+
+
+    const empty =
+        document.getElementById("emptyState");
+
+
+    const search =
+        document
+        .getElementById("searchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    let filtered =
+        games.filter(game=>{
+
+            const matchesCategory =
+                selectedCategory==="All" ||
+                game.category===selectedCategory;
+
+
+            const matchesSearch =
+                !search ||
+                game.name
+                    .toLowerCase()
+                    .includes(search) ||
+                game.developer
+                    .toLowerCase()
+                    .includes(search);
+
+
+            return (
+                matchesCategory &&
+                matchesSearch
+            );
+
+        });
+
+
+    document
+        .getElementById("gameCount")
+        .textContent =
+            games.length +
+            (games.length===1
+                ?" game"
+                :" games");
+
+
+    if(filtered.length===0){
+
+        grid.innerHTML="";
+
+        empty.style.display="block";
+
+
+        if(
+            games.length>0 &&
+            (search || selectedCategory!=="All")
+        ){
+
+            empty.innerHTML=`
+
+                <div class="empty-icon">
+                    🔍
+                </div>
+
+                <h3>No games found</h3>
+
+                <p>
+                    Try another search or category.
+                </p>
+
+                <button
+                    onclick="resetFilters()">
+                    SHOW ALL GAMES
+                </button>
+
+            `;
+
+        }else{
+
+            empty.innerHTML=`
+
+                <div class="empty-icon">
+                    🎮
+                </div>
+
+                <h3>No games published yet</h3>
+
+                <p>
+                    GAMEVAULT is empty.<br>
+                    Create your first game and upload it here.
+                </p>
+
+                <button onclick="openUpload()">
+                    ＋ UPLOAD YOUR GAME
+                </button>
+
+            `;
+
+        }
+
+        return;
+
+    }
+
+
+    empty.style.display="none";
+
+
+    grid.innerHTML =
+        filtered
+        .map(game=>createGameCard(game))
+        .join("");
+
+}
+
+
+/* =========================================
+   GAME CARD
+========================================= */
+
+function createGameCard(game){
+
+    return `
+
+        <article class="game-card">
+
+            <div class="game-cover">
+
+                ${
+                    game.icon
+                    ?
+                    `<img
+                        src="${game.icon}"
+                        alt="${escapeHTML(game.name)}">`
+                    :
+                    `<div class="game-placeholder">
+                        🎮
+                    </div>`
+                }
+
+            </div>
+
+
+            <div class="game-info">
+
+                <div class="game-name">
+                    ${escapeHTML(game.name)}
+                </div>
+
+                <div class="game-developer">
+                    ${escapeHTML(game.developer)}
+                </div>
+
+                <span class="game-category">
+                    ${escapeHTML(game.category)}
+                </span>
+
+
+                <div class="game-actions">
+
+                    <button
+                        class="details-btn"
+                        onclick="openDetails('${game.id}')">
+                        Details
+                    </button>
+
+                    <button
+                        class="play-btn"
+                        onclick="launchGame('${game.id}')">
+                        ▶ Play
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* =========================================
+   DETAILS
+========================================= */
+
+function openDetails(id){
+
+    const game =
+        games.find(
+            item=>item.id===id
+        );
+
+
+    if(!game) return;
+
+
+    currentGameId=id;
+
+
+    const content =
+        document.getElementById(
+            "detailsContent"
+        );
+
+
+    const size =
+        formatBytes(game.fileSize);
+
+
+    content.innerHTML=`
+
+        <div class="detail-cover">
+
+            ${
+                game.icon
+                ?
+                `<img
+                    src="${game.icon}"
+                    alt="${escapeHTML(game.name)}">`
+                :
+                `🎮`
+            }
+
+        </div>
+
+
+        <div class="detail-title">
+            ${escapeHTML(game.name)}
+        </div>
+
+
+        <div class="detail-developer">
+            by ${escapeHTML(game.developer)}
+        </div>
+
+
+        <div class="detail-meta">
+
+            <div class="meta">
+                <strong>
+                    ${escapeHTML(game.version)}
+                </strong>
+                <span>Version</span>
+            </div>
+
+            <div class="meta">
+                <strong>
+                    ${escapeHTML(game.category)}
+                </strong>
+                <span>Category</span>
+            </div>
+
+            <div class="meta">
+                <strong>
+                    ${size}
+                </strong>
+                <span>File Size</span>
+            </div>
+
+        </div>
+
+
+        <div class="detail-description">
+            ${escapeHTML(game.description)}
+        </div>
+
+
+        <div style="
+            margin-top:15px;
+            background:#f5f6fa;
+            padding:12px;
+            border-radius:12px;
+            font-size:13px;
+            color:#657084;
+        ">
+
+            📦 File:
+            <strong>
+                ${escapeHTML(game.fileName)}
+            </strong>
+
+        </div>
+
+
+        ${
+            game.screenshots &&
+            game.screenshots.length
+            ?
+            `
+
+            <div style="
+                margin-top:20px;
+                font-weight:900;
+            ">
+                Screenshots
+            </div>
+
+            <div style="
+                display:grid;
+                grid-template-columns:repeat(2,1fr);
+                gap:10px;
+                margin-top:10px;
+            ">
+
+                ${game.screenshots
+                    .map(
+                        image=>`
+                            <img
+                                src="${image}"
+                                style="
+                                    width:100%;
+                                    aspect-ratio:16/9;
+                                    object-fit:cover;
+                                    border-radius:12px;
+                                "
+                            >
+                        `
+                    )
+                    .join("")}
+
+            </div>
+
+            `
+            :
+            ""
+        }
+
+
+        <div class="detail-buttons">
+
+            <button
+                class="delete-btn"
+                onclick="deleteGame('${game.id}')">
+                🗑️ Delete
+            </button>
+
+            <button
+                class="play-large"
+                onclick="launchGame('${game.id}')">
+                ▶ PLAY GAME
+            </button>
+
+        </div>
+
+    `;
+
+
+    document
+        .getElementById("detailsModal")
+        .classList.add("show");
+
+}
+
+
+function closeDetails(){
+
+    document
+        .getElementById("detailsModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================
+   PLAY GAME
+========================================= */
+
+function launchGame(id){
+
+    const game =
+        games.find(
+            item=>item.id===id
+        );
+
+
+    if(!game){
+
+        showToast("Game not found.");
+
+        return;
+
+    }
+
+
+    const extension =
+        getExtension(game.fileName);
+
+
+    /*
+     * HTML games can be opened in a new browser tab
+     * when their stored data is available.
+     */
+
+    if(
+        extension===".html" ||
+        extension===".htm"
+    ){
+
+        try{
+
+            const byteString =
+                atob(
+                    game.gameFile
+                    .split(",")[1]
+                );
+
+
+            const mime =
+                game.fileType ||
+                "text/html";
+
+
+            const array =
+                new Uint8Array(
+                    byteString.length
+                );
+
+
+            for(
+                let i=0;
+                i<byteString.length;
+                i++
+            ){
+
+                array[i] =
+                    byteString.charCodeAt(i);
+
+            }
+
+
+            const blob =
+                new Blob(
+                    [array],
+                    {type:mime}
+                );
+
+
+            const url =
+                URL.createObjectURL(blob);
+
+
+            window.open(
+                url,
+                "_blank"
+            );
+
+
+            showToast(
+                "Opening your HTML game..."
+            );
+
+
+            return;
+
+        }catch(error){
+
+            console.error(error);
+
+        }
+
+    }
+
+
+    /*
+     * For APK, AAB, EXE, ZIP, PCK etc.,
+     * browser cannot directly execute/install them.
+     * Download the uploaded file instead.
+     */
+
+    downloadGame(game);
+
+}
+
+
+/* =========================================
+   DOWNLOAD GAME
+========================================= */
+
+function downloadGame(game){
+
+    if(!game || !game.gameFile){
+
+        showToast(
+            "Game file is not available."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const parts =
+            game.gameFile.split(",");
+
+
+        const mime =
+            game.fileType ||
+            "application/octet-stream";
+
+
+        const byteString =
+            atob(parts[1]);
+
+
+        const array =
+            new Uint8Array(
+                byteString.length
+            );
+
+
+        for(
+            let i=0;
+            i<byteString.length;
+            i++
+        ){
+
+            array[i] =
+                byteString.charCodeAt(i);
+
+        }
+
+
+        const blob =
+            new Blob(
+                [array],
+                {type:mime}
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const a =
+            document.createElement("a");
+
+
+        a.href=url;
+
+        a.download =
+            game.fileName ||
+            game.name;
+
+
+        document.body.appendChild(a);
+
+        a.click();
+
+        a.remove();
+
+
+        setTimeout(
+            ()=>URL.revokeObjectURL(url),
+            1000
+        );
+
+
+        showToast(
+            "Downloading " +
+            game.fileName
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            "Could not download the game."
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   DELETE GAME
+========================================= */
+
+function deleteGame(id){
+
+    const game =
+        games.find(
+            item=>item.id===id
+        );
+
+
+    if(!game) return;
+
+
+    const yes =
+        confirm(
+            "Delete \"" +
+            game.name +
+            "\" from GAMEVAULT?"
+        );
+
+
+    if(!yes) return;
+
+
+    games =
+        games.filter(
+            item=>item.id!==id
+        );
+
+
+    saveGames();
+
+    closeDetails();
+
+    renderGames();
+
+
+    showToast(
+        "Game deleted."
+    );
+
+}
+
+
+/* =========================================
+   PROFILE
+========================================= */
+
+function showProfile(){
+
+    document
+        .getElementById("profileGames")
+        .textContent =
+            games.length;
+
+
+    let total=0;
+
+
+    games.forEach(
+        game=>{
+            total +=
+                Number(game.fileSize)||0;
+        }
+    );
+
+
+    document
+        .getElementById("profileStorage")
+        .textContent =
+            formatBytes(total);
+
+
+    document
+        .getElementById("profileModal")
+        .classList.add("show");
+
+}
+
+
+function closeProfile(){
+
+    document
+        .getElementById("profileModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================
+   DELETE ALL
+========================================= */
+
+function clearAllGames(){
+
+    if(games.length===0){
+
+        showToast(
+            "There are no games to delete."
+        );
+
+        return;
+
+    }
+
+
+    const yes =
+        confirm(
+            "Delete ALL uploaded games?"
+        );
+
+
+    if(!yes) return;
+
+
+    games=[];
+
+
+    saveGames();
+
+    renderGames();
+
+    closeProfile();
+
+
+    showToast(
+        "All games deleted."
+    );
+
+}
+
+
+/* =========================================
+   RESET SEARCH/CATEGORY
+========================================= */
+
+function resetFilters(){
+
+    selectedCategory="All";
+
+
+    document
+        .getElementById("searchInput")
+        .value="";
+
+
+    document
+        .querySelectorAll(".category")
+        .forEach(
+            item=>{
+                item.classList.remove("active");
+            }
+        );
+
+
+    const first =
+        document.querySelector(
+            ".category"
+        );
+
+
+    if(first){
+        first.classList.add("active");
+    }
+
+
+    renderGames();
+
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+let toastTimer=null;
+
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+
+    toast.textContent=message;
+
+
+    toast.classList.add("show");
+
+
+    clearTimeout(toastTimer);
+
+
+    toastTimer =
+        setTimeout(
+            ()=>{
+                toast.classList.remove("show");
+            },
+            3000
+        );
+
+}
+
+
+/* =========================================
+   FORMAT BYTES
+========================================= */
+
+function formatBytes(bytes){
+
+    bytes=Number(bytes)||0;
+
+
+    if(bytes===0){
+        return "0 MB";
+    }
+
+
+    const units=[
+        "B",
+        "KB",
+        "MB",
+        "GB"
+    ];
+
+
+    const index =
+        Math.floor(
+            Math.log(bytes) /
+            Math.log(1024)
+        );
+
+
+    const value =
+        bytes /
+        Math.pow(
+            1024,
+            index
+        );
+
+
+    return (
+        value.toFixed(
+            index===0 ? 0 : 1
+        )
+        +
+        " "
+        +
+        units[index]
+    );
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================
+   CLOSE MODALS WHEN CLICKING OUTSIDE
+========================================= */
+
+document
+.querySelectorAll(".modal")
+.forEach(modal=>{
+
+    modal.addEventListener(
+        "click",
+        function(event){
+
+            if(event.target===modal){
+
+                modal.classList.remove("show");
+
+            }
+
+        }
+    );
+
+});
+
+
+/* =========================================
+   ESC KEY
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key==="Escape"){
+
+            document
+                .querySelectorAll(".modal")
+                .forEach(
+                    modal =>
+                    modal.classList.remove("show")
+                );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+loadGames();
+
+renderGames();
+
+</script>
+
+</body>
+</html>
